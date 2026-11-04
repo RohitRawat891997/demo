@@ -1,161 +1,140 @@
-# CloudWatch Lab
+# CloudWatch Lab: Monitor an EC2 Instance
 
 ## Objective
 
-Use Amazon CloudWatch to monitor AWS resources, review metrics and logs, create dashboards, and configure alarms that show how operational visibility supports secure and reliable workload management.
+Use Amazon CloudWatch to review metrics, build a dashboard, configure an alarm, and explore logs. This lab introduces how monitoring helps you notice performance and availability issues and troubleshoot them.
 
-## Why this matters
+## How the pieces fit together
 
-Monitoring is a core operational skill in AWS. Without CloudWatch, it is difficult to know whether a system is failing, slow, over-utilized, or behaving unexpectedly. This lab teaches the habit of observing the health of services before issues become outages.
+- **Metrics** are time-based measurements, such as EC2 CPU utilization.
+- **Dashboards** display selected metrics in one place.
+- **Alarms** evaluate metrics against a condition and can change state or trigger an action.
+- **Logs** are event records collected from applications and services.
+- **Amazon SNS** can deliver alarm notifications, for example by email.
 
 ## Before you begin
 
-Before reviewing metrics, make sure:
+- Choose the AWS Region where your EC2 instance is running; CloudWatch resources and metrics are regional.
+- Have a running EC2 instance to monitor.
+- Basic EC2 metrics, including CPU utilization, network traffic, and status checks, are published to CloudWatch automatically. Detailed monitoring provides more frequent metric data and may incur additional charges.
+- Memory usage and filesystem/disk-space metrics are not included in the standard EC2 metrics. To collect these, install and configure the CloudWatch agent.
+- EC2 operating-system and application logs are not automatically available in CloudWatch Logs. Configure the CloudWatch agent or the relevant AWS service integration to publish them.
 
-- you have a running EC2 instance or other AWS service to monitor
-- CloudWatch is enabled for the resource
-- you have a small test workload to generate metrics
-- you understand the region where the service is running
+## Names and tags for this lab
 
-## What you need to update in AWS
+Use these example values, or choose your own:
 
-When creating the monitoring setup, update these values:
-
-- Dashboard name: `lab07-aws-overview`
-- Alarm name: `alarm-lab07-ec2-high-cpu`
-- SNS topic name: `sns-lab07-alerts`
+- Dashboard: `lab07-aws-overview`
+- Alarm: `alarm-lab07-ec2-high-cpu`
+- SNS topic: `sns-lab07-alerts`
 - Tags:
-  - Name = `lab07-cloudwatch`
-  - Project = `aws-zero-to-hero`
-  - Environment = `dev`
-  - Owner = `your-name`
-  - Purpose = `monitoring-practice`
+  - `Name` = `lab07-cloudwatch`
+  - `Project` = `aws-zero-to-hero`
+  - `Environment` = `dev`
+  - `Owner` = `your-name`
+  - `Purpose` = `monitoring-practice`
 
-Why this matters:
-- dashboards make operational health easier to see
-- alarms enable early response to issues
-- tags help you manage cost and cleanup
-- naming conventions reduce confusion when you have multiple alarms and dashboards
+Consistent names and tags make resources easier to identify, manage, and clean up.
 
-## Step-by-step instructions
+## Step-by-step practice
 
-### Step 1: Open CloudWatch
+### 1. Open CloudWatch
 
-1. Open the AWS Console.
-2. Search for CloudWatch.
-3. Open the CloudWatch dashboard and metrics section.
+1. Sign in to the AWS Console.
+2. Select the same Region as your EC2 instance.
+3. Search for and open **CloudWatch**.
 
-### Step 2: Review EC2 metrics
+### 2. Review EC2 metrics
 
-Select a running EC2 instance and review:
+1. In CloudWatch, open **Metrics** and find the **EC2** metrics (the console may label this **All metrics**).
+2. Select **Per-Instance Metrics** and choose your instance.
+3. Review metrics such as:
+   - `CPUUtilization`
+   - `NetworkIn` and `NetworkOut`
+   - `StatusCheckFailed`, `StatusCheckFailed_Instance`, and `StatusCheckFailed_System`
 
-- CPU utilization
-- network traffic
-- status checks
-- disk activity if applicable
+Standard EC2 metrics do not include memory utilization or filesystem usage. Those require the CloudWatch agent and appropriate configuration.
 
-This shows how AWS exposes resource health through metrics.
+### 3. Create a dashboard
 
-### Step 3: Create a dashboard
+1. Open **Dashboards** and choose **Create dashboard**.
+2. Name it `lab07-aws-overview`.
+3. Add metric widgets for your instance, such as CPU utilization, status checks, and network traffic.
+4. Save the dashboard.
 
-1. Go to Dashboards.
-2. Click Create dashboard.
-3. Name it `lab07-aws-overview`.
-4. Add widgets for:
-   - CPU utilization
-   - status checks
-   - network in/out
-5. Save the dashboard.
+Dashboards help you view selected signals together; they do not themselves alert you when a metric crosses a threshold.
 
-This makes operations easier to visualize at a glance.
+### 4. Create a CPU alarm
 
-### Step 4: Create a CloudWatch alarm
+1. In CloudWatch, open **Alarms** and choose **Create alarm**.
+2. Select the EC2 `CPUUtilization` metric for your instance.
+3. For a simple practice alarm, set the condition to **CPU utilization greater than 60%**.
+4. Set the metric period to **1 minute** and configure the alarm to trigger when the condition is met for **5 consecutive evaluation periods**. This means the value is above the threshold for five one-minute periods.
+5. Set missing data handling deliberately. For a basic lab, you can leave the default, but understand that missing data is not the same as zero CPU usage.
+6. Name the alarm `alarm-lab07-ec2-high-cpu` and create it.
 
-Configure an alarm for CPU utilization:
+Choose a threshold that fits the workload. A short-lived CPU spike may not indicate a problem, so production alarms often use thresholds and evaluation windows based on service needs.
 
-- metric: CPU utilization
-- threshold: above 60% for 5 minutes
-- alarm name: `alarm-lab07-ec2-high-cpu`
-- action: optional SNS notification
+### 5. Optionally add an SNS notification
 
-This teaches the idea of proactive alerting before an issue becomes critical.
+1. Create an SNS topic named `sns-lab07-alerts`.
+2. Add an email subscription using an address you can access.
+3. Confirm the subscription using the confirmation message sent by SNS; notifications will not arrive until the subscription is confirmed.
+4. When creating or editing the alarm, configure the SNS topic as an alarm action for the **In alarm** state.
 
-### Step 5: Add SNS notifications
+Alarm actions run when the alarm enters the configured state. Avoid sending test notifications to an address or endpoint you do not control.
 
-If you use an alarm notification:
+### 6. Explore CloudWatch Logs
 
-1. create an SNS topic
-2. subscribe your email or a simple endpoint
-3. attach the topic to the alarm
+1. Open **Logs → Log groups** in CloudWatch.
+2. Inspect log groups that have already been created for your AWS services.
+3. If you want EC2 operating-system or application logs, install and configure the CloudWatch agent with the required permissions and log-file configuration.
+4. Review log streams and set a retention period appropriate for the lab.
 
-This demonstrates how CloudWatch can notify a human or downstream service when a threshold is breached.
+A log group is a collection of log streams. A stream contains log events from a particular source. Unlike standard EC2 metrics, instance log files must be configured for collection.
 
-### Step 6: Review logs
+### 7. Test and verify
 
-1. Open CloudWatch Logs.
-2. Inspect log groups for EC2, Lambda, or other services.
-3. Check log streams and retention policy.
+1. Open the alarm and check its current state and metric graph. A new alarm may show **Insufficient data** until it has enough metric datapoints.
+2. If you choose to generate CPU load, do so only on an instance you own or are authorized to use, and stop the workload after the test.
+3. Confirm the metric graph changes and observe whether the alarm state changes after the configured evaluation periods.
+4. If configured, confirm that the SNS subscription receives the alarm notification.
+5. Check that the dashboard displays the metrics you selected.
 
-This shows the difference between system metrics and detailed operational logging.
+## Common issues
 
-### Step 7: Test the alarm behavior
-
-Trigger a CPU spike or run a workload that increases processor use.
-
-Then review:
-
-- the metric graph
-- alarm status
-- any SNS notification
-- the dashboard changes
-
-This confirms that monitoring works in real time.
-
-## Key concepts to remember
-
-- Metric: a numerical signal such as CPU or network activity
-- Alarm: threshold-based alerting mechanism
-- Dashboard: a visual summary of metrics
-- Log group: collection of log streams
-- SNS: message delivery service for alerts
-
-## Common mistakes to avoid
-
-- setting thresholds too low and creating noisy alerts
-- ignoring cost implications of long log retention
-- creating dashboards without meaningful widgets
-- not testing the alarm after creation
+- **No instance metrics:** Confirm the selected Region and instance ID. Allow time for metric datapoints to arrive and verify the instance is running.
+- **Memory or disk-space metrics are missing:** Install and configure the CloudWatch agent; these are not standard EC2 metrics.
+- **No EC2 log groups appear:** Configure the CloudWatch agent or another log-publishing integration. Logs are not automatically collected from an EC2 operating system.
+- **Alarm stays in Insufficient data:** Check that the metric is receiving datapoints, that the instance is running, and that the alarm's missing-data behavior is appropriate.
+- **No email notification:** Confirm the SNS email subscription and verify the alarm has an action configured for the state it entered.
 
 ## Cost and security notes
 
-- log retention can increase cost over time
-- keep alarm thresholds practical
-- avoid unnecessary notifications
-- secure access to CloudWatch logs and alarm configuration
+- CloudWatch charges can apply to custom metrics, detailed monitoring, dashboards, alarms, log ingestion, storage, and queries. Check current AWS pricing for your Region and usage.
+- Set log retention instead of keeping practice logs indefinitely.
+- Use least-privilege IAM permissions for CloudWatch and the CloudWatch agent.
+- Restrict access to dashboards, alarms, and logs to people who need it.
+- Keep alarm thresholds and notifications useful to avoid unnecessary alert noise.
 
 ## Cleanup
 
-After the lab:
+After the lab, remove resources you no longer need:
 
-- delete unused alarms
-- remove unnecessary SNS topics
-- delete dashboards you no longer need
-- reduce log retention or remove old logs if not required
+- Delete the practice alarm and dashboard.
+- Delete the SNS topic and subscription if they were created only for this lab.
+- Remove or shorten retention for practice log groups as appropriate.
+- If you installed the CloudWatch agent only for practice, uninstall it or remove its configuration if no longer needed.
+- Stop or terminate any test EC2 instance you created, taking care not to remove resources you still use.
 
 ## Check your understanding
 
-Answer these in your notes:
-
-- Why is monitoring important in AWS?
-- What is the difference between CloudWatch metrics and logs?
-- When should you create an alarm instead of just checking a dashboard?
-- How does CloudWatch support reliability and troubleshooting?
-- Why do cost and retention settings matter for log data?
+- What is the difference between a metric and a log?
+- Which EC2 metrics are available by default, and what requires the CloudWatch agent?
+- How does an alarm's evaluation period affect when it changes state?
+- What must be done before an SNS email subscription can receive notifications?
+- Why should log retention and IAM permissions be configured deliberately?
 
 ## Reflection
 
-Write a short summary:
-
-- What did this lab teach you about observability?
-- Which monitoring signal seems most useful in real systems?
-- Why is monitoring one of the biggest differences between a beginner setup and a production environment?
+Write a short summary of what you learned about observability. Which metric or log would be most useful for troubleshooting a real application, and why?
