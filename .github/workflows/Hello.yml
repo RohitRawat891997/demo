@@ -1,0 +1,22 @@
+# workflows name
+name: Hello
+
+# event for manual trigger 
+on:
+  workflow_dispatch:
+
+jobs:
+  code-clone:
+   runs-on: ubuntu-latest
+   steps:
+     - name: clone the code
+       run: echo "cloning the code"
+       
+     - name: test the code
+       run: echo "testing the code"
+
+     - name: build the code
+       run: echo "building the code"
+
+     - name: deploy the code
+       run: echo "deploying the code"
