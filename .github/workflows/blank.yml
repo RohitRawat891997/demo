@@ -11,8 +11,4 @@ jobs:
     steps:
       - name: code cloning..
         run: echo "cloning the code..."
- code-testing:
-   runs-on: ubuntu-latest
-   steps:
-     - name: code testing..
-       run: echo "testing the code..."
+
