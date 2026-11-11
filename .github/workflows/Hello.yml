@@ -1,22 +1,25 @@
-# workflows name
-name: Hello
+# workflow name
+name: ci
 
-# event for manual trigger 
-on:
+on: 
   workflow_dispatch:
 
 jobs:
+
   code-clone:
-   runs-on: ubuntu-latest
-   steps:
-     - name: clone the code
-       run: echo "cloning the code"
-       
-     - name: test the code
-       run: echo "testing the code"
+    runs-on: ubuntu-latest
+    steps:
+      - name: code checkout
+        uses: actions/checkout@v7
 
-     - name: build the code
-       run: echo "building the code"
+      - name: install code python linter
+        run: pip install ruff
+        
+      - name: run pyliner
+        run: ruff check  
 
-     - name: deploy the code
-       run: echo "deploying the code"
+  code-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test code
+        run: echo "testing the code...."
