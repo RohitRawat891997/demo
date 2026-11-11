@@ -1,11 +1,11 @@
 # workflow name
-name: ci
+name: Hello
 
-on: 
-  workflow_dispatch:
-
+on:
+  push:
+    paths: "*.py"
+    
 jobs:
-
   code-clone:
     runs-on: ubuntu-latest
     steps:
