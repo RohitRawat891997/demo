@@ -18,8 +18,4 @@ jobs:
       - name: run pyliner
         run: ruff check  
 
-  code-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: test code
-        run: echo "testing the code...."
+
