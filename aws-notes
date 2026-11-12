@@ -1,0 +1,193 @@
+------- AWS Practice -----
+
+1. what is Cloud Computing & AWS Introduction
+ 
+   Type of services:-
+	IaaS, 
+	PaaS, 
+	SaaS 
+
+   AWS Global Infrastructure:- 
+	Regions, 
+	AZs, 
+	Edge Locations
+
+2. IAM :
+	users & groups creation
+	roles, policies, MFA  
+	Identity providers
+
+
+3. Compute resource :
+	ec2 instance creation
+	encrypted volume 
+	ec2 images
+	key_pair
+	security_groups
+
+4. relibility & scalability :
+	auto_scaling
+	load balancer
+
+5. Monitoring:
+	cloudwatch alerts
+	cloudwatch logs
+	cloudwatch eventbridge rules
+	cloudwatch x-ray & canaries
+
+6. s3 bucket:
+	s3 bucket creation ["public bucket", "private bucket"] 
+	s3 bucket versioning
+	static website hosting
+	server access logs
+	event notification using sns & sqs
+	cors
+	storage classes :
+		standard 		= frequent access     = miliseconds
+		standard-AI 		= infrequent access   = miliseconds
+		intelligent tiering 	= cost-optimize       = miliseconds
+		one-zone-AI  		= infrequent access   = miliseconds
+		glance instant retrive  = rare                = miliseconds
+		glance flexible retrive = archive             = mins - hours
+		glance archive retrive  = very rare           = 10 -24 hours
+		express one-zone        = high performance    = miliseconds
+
+	bucket lifecycle rules
+	bucket replication rules ["cross region replication", "same region replication"]
+	bucket inventory
+	bucket access point
+
+7. efs : elastic file system	
+
+8. Elasticache : 
+	redis oos: accept all data structure.
+	memcaching: key: value
+
+9. database :
+
+	DynamoDB: 
+	RDS: 	relational database service
+			read replica --- 
+			standby  -- high availability
+			persistent
+			backup & snapshot (manual & automatical)
+
+
+10. cloudfront:
+
+11. route53 & ACM (amazon certificate manager) :
+	1. domain registration:
+	2. health check
+	3. hosted zones:
+               nameserver:
+               soa:
+	       records:		 
+	4. routing policies
+		simple routing.
+		latency based
+		weighted
+		ip based
+		geolocation
+		geo-proximity
+		malti-value
+
+12. Lambda service:
+13. aws cloudformation: 
+
+14. KMS
+
+	aws key manager
+	owner manager
+	custome key manager
+		syncronic
+			single key----
+		asyncronic
+			public and private key
+
+15. cloudTrail & gaurdDuty:
+16: waf & sheild:
+17. Elastic beanstalk:
+
+
+18. vpc :
+	vpc 
+	subnet
+	internet gateway
+	routing tables
+	nat gateway
+	endpoints
+	nacl
+	security group
+
+19. snapshot/backup/data lifecycle manager
+
+20. migration....
+
+===========================================================================
+
+AWS Security Services:- 
+
+1. Monitoring, Logging & Auditing :-
+
+	1. Amazon CloudWatch = Monitor EC2, CPU, memory (with agent), disk, application logs, metrics, alarms and dashboards.
+	2. AWS CloudTrail    = Track API activities: who created, deleted, modified or accessed AWS resources.
+	3. VPC Flow Logs     = Capture network traffic metadata, accepted/rejected connections, source and destination IPs.
+	4. CloudWatch Logs   = Centralize and analyze application, system and security logs.
+
+
+2. Threat Detection & Security Monitoring :-
+
+	5. Amazon GuardDuty = Detect suspicious activity, compromised credentials, malware and unusual API calls.
+	6. AWS Security Hub = Centralize security findings and assess security posture against standards.
+	7. Amazon Detective = Investigate security incidents and understand relationships between suspicious activities.
+	8. Amazon Inspector = Identify vulnerabilities in EC2, container images and supported Lambda workloads.
+	9. Amazon Macie     = Discover and protect sensitive data, such as personally identifiable information (PII), in S3.
+
+3. Network Security & Protection :-
+
+	10. AWS Shield           = Protect applications against Distributed Denial of Service (DDoS) attacks.
+	11. AWS WAF              = Protect web applications against SQL injection, cross-site scripting and unwanted web requests.
+	12. AWS Network Firewall = Inspect and filter network traffic entering, leaving and moving through VPCs.
+	13. AWS Firewall Manager = Centrally manage firewall policies across multiple AWS accounts.
+
+4. Identity & Access Management :-
+
+5. Data Encryption & Secrets Management :-
+
+Service				Purpose
+
+AWS KMS				Create and manage encryption keys
+AWS Secrets Manager		Securely store database passwords and API secrets
+AWS Systems Manager		Parameter Store	Store configuration and secure parameters
+AWS Certificate 		Manager	Manage SSL/TLS certificates
+AWS CloudHSM			Hardware security module for cryptographic operations
+
+6. Configuration, Compliance & Governance :-
+
+Service				Purpose
+
+AWS Config			Track resource configurations and compliance
+AWS Audit Manager		Collect evidence for audits
+AWS Artifact			Access AWS compliance reports
+AWS Security Hub		Central security posture management
+Systems Manager Patch Manager	Automate security patching
+AWS Security Lake		Centralize security data from AWS and supported sources
+
+
+
+Practical labs we will add to the course
+- [ ] Configure CloudTrail and investigate API activity.
+- [ ] Create CloudWatch alarms for EC2.
+- [ ] Enable VPC Flow Logs and analyze rejected traffic.
+- [ ] Enable GuardDuty and investigate sample findings.
+- [ ] Configure AWS WAF rules.
+- [ ] Understand AWS Shield Standard vs Advanced.
+- [ ] Configure Security Hub and review findings.
+- [ ] Scan EC2 vulnerabilities using Inspector.
+- [ ] Discover sensitive S3 data using Macie.
+- [ ] Configure IAM Access Analyzer.
+- [ ] Encrypt S3 and EBS using KMS.
+- [ ] Store application secrets using Secrets Manager.
+- [ ] Create AWS Config compliance rules.
+- [ ] Implement automated patching using Systems Manager.
+
