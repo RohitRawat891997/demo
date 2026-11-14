@@ -15,11 +15,13 @@
 2. IAM :
 	users & groups creation
 	roles, policies, MFA  
+    user CLI access:-   aws configure
 	Identity providers
 
 
 3. Compute resource :
-	ec2 instance creation
+	ec2 instance 
+    ami
 	encrypted volume 
 	ec2 images
 	key_pair
@@ -43,10 +45,10 @@
 	event notification using sns & sqs
 	cors
 	storage classes :
-		standard 		= frequent access     = miliseconds
-		standard-AI 		= infrequent access   = miliseconds
+		standard 				= frequent access     = miliseconds
+		standard-AI 			= infrequent access   = miliseconds
 		intelligent tiering 	= cost-optimize       = miliseconds
-		one-zone-AI  		= infrequent access   = miliseconds
+		one-zone-AI  			= infrequent access   = miliseconds
 		glance instant retrive  = rare                = miliseconds
 		glance flexible retrive = archive             = mins - hours
 		glance archive retrive  = very rare           = 10 -24 hours
@@ -73,7 +75,19 @@
 			backup & snapshot (manual & automatical)
 
 
-10. cloudfront:
+10. cloudfront: it is a Content Delivery Network (CDN) service provided by AWS.
+		Components of cloudfront:-
+			1. Distribution: it is the main configuration unit of CloudFront.
+			2. Origin: Origin is the original location where your application or content is hosted. 
+                       CloudFront fetches content from the origin when the requested content is not available in its cache.
+			3. Edge Location : AWS infrastructure location where CloudFront caches copies of your content closer to users.
+				Remember: Edge Locations help reduce latency by serving cached content closer to users.
+
+			4. Regional Edge Cache: it is a larger caching layer between CloudFront Edge Locations and the origin.
+			5. Cache Behavior: Cache Behavior defines how CloudFront handles requests for specific URL patterns.
+			6. CloudFront Invalidation
+			7. Cache Hit vs Cache Miss
+			8. CloudFront Security
 
 11. route53 & ACM (amazon certificate manager) :
 	1. domain registration:
@@ -81,7 +95,7 @@
 	3. hosted zones:
                nameserver:
                soa:
-	       records:		 
+	      	  	 records:		 
 	4. routing policies
 		simple routing.
 		latency based
