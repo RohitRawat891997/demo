@@ -85,9 +85,14 @@
 
 			4. Regional Edge Cache: it is a larger caching layer between CloudFront Edge Locations and the origin.
 			5. Cache Behavior: Cache Behavior defines how CloudFront handles requests for specific URL patterns.
-			6. CloudFront Invalidation
+			6. CloudFront Invalidation:
+					Suppose you update your website's logo in S3.
+					However, users still see the old logo because CloudFront has cached the previous version.
+					Solution: Create a CloudFront invalidation.
 			7. Cache Hit vs Cache Miss
-			8. CloudFront Security
+			8. CloudFront Security:
+            9. CloudFront Cache Policies:
+					
 
 11. route53 & ACM (amazon certificate manager) :
 	1. domain registration:
